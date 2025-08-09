@@ -29,6 +29,18 @@ app.use('/api/gacha', gachaRoutes);
 app.use('/api/inventory', inventoryRoutes);
 app.use('/api/currency', currencyRoutes);
 
+// Telegram Webhook setup
+const RENDER_URL = process.env.RENDER_URL;
+if (RENDER_URL) {
+  bot.setWebHook(`${RENDER_URL}/bot`);
+}
+
+// Telegram Webhook route
+app.post('/bot', (req, res) => {
+  bot.processUpdate(req.body);
+  res.sendStatus(200);
+});
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {

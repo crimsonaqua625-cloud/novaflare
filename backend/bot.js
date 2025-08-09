@@ -1,24 +1,27 @@
-// backend/bot.js
 const TelegramBot = require('node-telegram-bot-api');
-const token = process.env.TELEGRAM_BOT_TOKEN; // put your bot token in .env
+const token = process.env.BOT_TOKEN;
 
-const bot = new TelegramBot(token, { polling: true });
+// Pass `null` to disable polling.
+const bot = new TelegramBot(token, { polling: false });
 
 const miniAppUrl = 'https://novaflare-n1m23osra-crimsonaqua625-clouds-projects.vercel.app/';
 
 bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
 
+  // The reply_markup object is defined directly here.
   const keyboard = {
     reply_markup: {
-      inline_keyboard: [
+      keyboard: [
         [
           {
             text: "Open NovaFlare Mini App",
             web_app: { url: miniAppUrl }
           }
         ]
-      ]
+      ],
+      resize_keyboard: true, // This is crucial to make the button large
+      one_time_keyboard: false // Keeps the keyboard visible
     }
   };
 
